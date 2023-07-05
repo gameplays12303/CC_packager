@@ -22,13 +22,21 @@ if fs.isDir(LUA_WRITE)
 then
     error(("%s: #2 expected file type got directory type"):format(LUA_WRITE),3)
 end
-local list = util.file.listsubs(LUA_PATH,false,true)
+local files = util.file.listsubs(LUA_PATH,true,false,false,false)
 local mainTable = {}
-local Dirs = util.file.listsubs(LUA_PATH,false,false,true)
+local Dirs = util.file.listsubs(LUA_PATH,false,true,true,false)
 local DirsMainTable = {}
+printError("files")
+for i,v in pairs(files) do
+    textutils.slowPrint(v)
+end
+printError("directorys")
+for i,v in pairs(Dirs) do
+    textutils.slowPrint(v)
+end
 if LUA_isRealitive
 then
-    for a,v in pairs(list) do
+    for a,v in pairs(files) do
         local Temp = util.string.split(v,"/")
         local Path = ""
         for i,b in pairs(Temp) do
@@ -37,7 +45,7 @@ then
                 Path = table.concat(Temp,"/",i,#Temp)
             end
         end
-        list[a] = Path
+        files[a] = Path
     end
     for a,v in pairs(Dirs) do
         local Temp = util.string.split(v,"/")
@@ -51,7 +59,8 @@ then
         Dirs[a] = Path
     end
 end
-for _,v in pairs(list) do
+printError("loading")
+for _,v in pairs(files) do
     textutils.slowPrint(v)
     local Path = ""
     local Table = {
