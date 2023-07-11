@@ -80,9 +80,9 @@ local Dirs = %s
 for _,v in pairs(Dirs) do
 if Path
     then
-        fs.makeDir(fs.combine(Path,v.Path))
+        fs.makeDir(fs.combine(Path,v))
     else
-        fs.makeDir(v.Path)
+        fs.makeDir(v)
      end
 end
 for _,v in pairs(programs) do
