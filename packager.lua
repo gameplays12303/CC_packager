@@ -76,7 +76,7 @@ then
     end
 end
 local programs = textutils.unserialise(%q)
-local Dirs = textutils.unserialise(%s)
+local Dirs = %s
 for _,v in pairs(Dirs) do
 if Path
     then
