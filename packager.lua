@@ -54,7 +54,7 @@ end
 for i,v in pairs(sFiles) do
     local temp = {
         Path = v,
-        func = fm.readFile(files[util.table.find(files,v)],"S")
+        func = fm.readFile(files[util.table.find(files,v)],"R")
     }
     sFiles[i] = temp
 end
