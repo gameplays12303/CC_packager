@@ -7,7 +7,6 @@ local LUA_PATH = expect(1,argue[1],"string")
 -- the installer Path
 local LUA_WRITE = expect(2,argue[2],"string") or ""
 LUA_WRITE = util.file.withoutExtension(LUA_WRITE)..".LINS"
-local bSource
 -- allows to specifi a installation Path when installing 
 -- example "../build/OS" --> "../OS"
 -- the 'build' directory  is left out because it's not a part of the program just where it's stored
@@ -26,21 +25,6 @@ then
     then
         LUA_Install = LUA_Install +1
     end
-end
-if LUA_Install
-then
-    bSource = expect(1,argue[3],"boolean","string","nil") or false
-    if type(bSource) == "string"
-    then
-        if bSource == "true"
-        then
-            bSource = true
-        else
-            bSource = false
-        end
-    end
-else
-    bSource = false
 end
 -- gets a list of programs and directorys to be packaged
 local Dir = util.file.listsubs(LUA_PATH,false,true,true,false)
@@ -98,7 +82,7 @@ if Path
         fs.makeDir(fs.combine(Path,v))
     else
         fs.makeDir(v)
-     end
+    end
 end
 for _,v in pairs(programs) do
     local file,mess
@@ -115,22 +99,11 @@ for _,v in pairs(programs) do
     file.write(v.func)
     file.close()
 end
-if %q
-then
-    local file,err = fs.open(fs.combine(Path,"Sourcelocation.db"),"w")
-    if not file
-    then
-        error(("faild to put Sourcelocation in file because of "):format(err),0)
-    end
-    file.write(tostring(Path))
-    file.close()
-end
-return true
 ]]
 if LUA_Install and type(LUA_Install) == "boolean"
 then
-    runhanndle = runhanndle:format(true,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir),bSource)
+    runhanndle = runhanndle:format(true,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir))
 else
-    runhanndle = runhanndle:format(false,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir),bSource)
+    runhanndle = runhanndle:format(false,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir))
 end
 fm.OverWrite(LUA_WRITE,runhanndle,"R")
