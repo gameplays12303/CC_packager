@@ -1,18 +1,22 @@
-local expect = ((require and require "cc.expect") or dofile("OS/modules/main/cc/expect.lua")).expect
-local fs = fs
+-- this is just a module to lower the ammount of code to be written
+-- if you need specific handling or are going to be writing to the file
+-- multipule times this is not the handle you want to use
+
+local expect = (require and require("cc.expect") or dofile("rom/modules/main/cc/expect.lua")).expect
+local insert = table.insert
+local open = fs.open
+local exists = fs.exists
 local fm = {}
-function fm.OverWrite(sPath,data,mode,Owner,hidden,Share)
+---@overload fun(sPath:string,data:any,mode:string)
+function fm.OverWrite(sPath,data,mode)
     expect(1,sPath,"string")
     expect(3,mode,"string","nil")
-    expect(4,Owner,"string","nil")
-    expect(6,hidden,"boolean","nil")
-    expect(7,Share,"boolean","nil")
     mode = mode or "S"
     if mode ~= "S" and mode ~= "R"
     then
         error("Invalid mode",2)
     end
-    local file,mess = fs.open(sPath,"w",Owner,hidden,Share)
+    local file,mess = open(sPath,"w")
     if file == nil then
         return error(mess,0)
     end
@@ -25,40 +29,19 @@ function fm.OverWrite(sPath,data,mode,Owner,hidden,Share)
     file.close()
     return true
 end
-function fm.WriteLine(sPath,data,mode,Owner,hidden,Share)
-    expect(1,sPath,"string")
-    expect(3,mode,"string","nil")
-    expect(4,Owner,"string","nil")
-    expect(6,hidden,"boolean","nil")
-    expect(7,Share,"boolean","nil")
-    mode = mode or "S"
-    if mode ~= "S" and mode ~= "R"
-    then
-        error("Invalid mode",2)
-    end
-    local file,mess = fs.open(sPath,"a",Owner,hidden,Share)
-    if file == nil then
-        return error(mess,0)
-    end
-    if mode == "R"
-    then
-        file.write(data)
-    else
-        file.write(textutils.serialise(data))
-    end
-    file.close()
-    return true
-end
+---@overload fun(sPath:string,mode:string)
 function fm.readFile(sPath,mode)
+    expect(1,sPath,"string")
+    expect(3,mode,"string")
     mode = mode or "S"
     if mode ~= "S" and mode ~= "R"
     then
-        error("Invalid mode",3)
+        error("Invalid mode",2)
     end
-    if not fs.exists(sPath) then
-        error("Invalid path "..sPath.." dose not exist",3)
+    if not exists(sPath) then
+        error("Invalid path "..sPath.." dose not exist",0)
     end
-    local file,mess = fs.open(sPath,"r")
+    local file,mess = open(sPath,"r")
     if file == nil then
         return error(mess,0)
     end
