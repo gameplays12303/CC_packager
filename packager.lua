@@ -2,11 +2,13 @@ local expect = require("cc.expect").expect
 local util = require("modules.utilties")
 local fm  = require("modules.fm")
 local argue = {...}
+-- code protection
+-- keeps usr from doing weird things and not understand why 
 --the Path to package up
 local LUA_PATH = expect(1,argue[1],"string")
--- the installer Path
-local LUA_WRITE = expect(2,argue[2],"string") or ""
-LUA_WRITE = util.file.withoutExtension(LUA_WRITE)..".LINS"
+-- the installer Paths
+local LUA_WRITE = (expect(2,argue[2],"string","nil") or "")
+LUA_WRITE = util.file.withoutExtension(LUA_WRITE).."."..settings.get("package.installer.type","LINS")
 -- allows to specifi a installation Path when installing 
 -- example "../build/OS" --> "../OS"
 -- the 'build' directory  is left out because it's not a part of the program just where it's stored
@@ -48,6 +50,14 @@ then
 else
     sDir = Dir
     sFiles = files
+end
+print("files")
+for _,v in pairs(sFiles) do
+    textutils.slowPrint(v)
+end
+print("dirs")
+for _,v in pairs(sDir) do
+    textutils.slowPrint(v)
 end
 
 for i,v in pairs(sFiles) do
