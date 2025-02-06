@@ -1,6 +1,7 @@
 local expect = require("cc.expect").expect
 local util = require("modules.utilties")
 local fm  = require("modules.fm")
+local GUI = require("modules.GUI")
 local argue = {...}
 -- code protection
 -- keeps usr from doing weird things and not understand why 
@@ -8,7 +9,7 @@ local argue = {...}
 local LUA_PATH = expect(1,argue[1],"string")
 -- the installer Paths
 local LUA_WRITE = (expect(2,argue[2],"string","nil") or "")
-LUA_WRITE = util.file.withoutExtension(LUA_WRITE).."."..settings.get("package.installer.type","LINS")
+LUA_WRITE = util.file.withoutExtension(LUA_WRITE).."."..settings.get("package.installer.type","LUA_Installer")
 -- allows to specifi a installation Path when installing 
 -- example "../build/OS" --> "../OS"
 -- the 'build' directory  is left out because it's not a part of the program just where it's stored
@@ -68,7 +69,7 @@ for i,v in pairs(sFiles) do
     sFiles[i] = temp
 end
 -- time to build the run handler
-local runhanndle = [[
+local installer = [[
 local Argue = {...}
 local expect = require("cc.expect").expect
 local Path
@@ -112,8 +113,8 @@ end
 ]]
 if LUA_Install and type(LUA_Install) == "boolean"
 then
-    runhanndle = runhanndle:format(true,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir))
+    installer = installer:format(true,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir))
 else
-    runhanndle = runhanndle:format(false,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir))
+    installer = installer:format(false,"%s","%s",textutils.serialise(sFiles),textutils.serialise(sDir))
 end
-fm.OverWrite(LUA_WRITE,runhanndle,"R")
+fm.OverWrite(LUA_WRITE,installer,"R")
