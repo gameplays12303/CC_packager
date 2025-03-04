@@ -1,3 +1,8 @@
+-- Modified from original GeneralModules, licensed under MIT
+-- These modifications were made by [Your Name or Organization] for the project
+-- For full license information, see LICENSE file in the modules directory.
+
+
 -- this is just a module to lower the ammount of code to be written
 -- if you need specific handling or are going to be writing to the file
 -- multipule times this is not the handle you want to use

@@ -1,3 +1,7 @@
+-- Modified from original GeneralModules, licensed under MIT
+-- These modifications were made by [Your Name or Organization] for the project
+-- For full license information, see LICENSE file in the modules directory.
+
 local util = require("modules.utilties")
 local expect = require("modules.expect2").expect
 return function (terminal,_sStartDir,message,AcceptFiles,AccpetDirs,file_type)
