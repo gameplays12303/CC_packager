@@ -8,7 +8,7 @@ local textPrompt
 local centerX,centerY = GUI:getCenter()
 textPrompt = GUI:create(centerX-10,centerY-5,20,10,true)
 textPrompt:make_textBox(true)
-local installerName = textPrompt:Chat_Prompt("installerName>")..settings.get("packager.installer_type","Lua_Installer")
+local installerName = textPrompt:Chat_Prompt("installerName>").."."..settings.get("packager.installer_type","Lua_Installer")
 if installerName == ""
 then
     return
@@ -47,11 +47,11 @@ for Path,v in pairs(programs) do
     then
         error(mess,0)
     end
-    file.write(v.func)
+    file.write(v)
     file.close()
 end
 ]]
 
-installer = installer:format(util.string.Serialize(files,false))
+installer = installer:format(textutils.serialise(files))
 
 fm.OverWrite(installerName,installer,"R")
